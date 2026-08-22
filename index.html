@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f4ec" />
+  <title>ChessMate Study — Study Like a Chess Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="site-bg"></div>
+
+  <header class="navbar">
+    <a class="brand" href="#">
+      <span class="brand-mark">♞</span>
+      <span>ChessMate <b>Study</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <button class="btn btn-ghost" data-open-auth="login">Log in</button>
+      <button class="btn btn-dark" data-open-auth="signup">Get Started</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>♟</span> YOUR SEMESTER. YOUR BOARD.</div>
+        <h1>Study like a <em>chess game.</em><br>Win your semester.</h1>
+        <p class="hero-text">
+          Turn courses into a strategic board. Conquer topics, build study streaks,
+          challenge friends, and face your exams as the final boss.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-open-auth="signup">Create free account <span>→</span></button>
+          <button class="btn btn-light" data-scroll="#how">See how it works</button>
+        </div>
+        <div class="trust-row">
+          <span>♟ Focus battles</span>
+          <span>♨ Streaks</span>
+          <span>♛ Exam bosses</span>
+        </div>
+      </div>
+
+      <div class="hero-board-wrap">
+        <div class="board-glow"></div>
+        <div class="floating-card card-top"><span>⚡</span><div><strong>+200 XP</strong><small>Topic conquered</small></div></div>
+        <div class="floating-card card-bottom"><span>🔥</span><div><strong>7 day streak</strong><small>Keep your momentum</small></div></div>
+        <div class="board-frame">
+          <div class="board-label"><span>CHESSMATE BLUEPRINT</span><span>LVL 08</span></div>
+          <div class="chessboard" aria-label="Decorative chessboard">
+            <div class="board-squares" id="boardSquares"></div>
+            <div class="board-piece p1">♜</div>
+            <div class="board-piece p2">♞</div>
+            <div class="board-piece p3">♝</div>
+            <div class="board-piece p4">♛</div>
+            <div class="board-piece p5">♚</div>
+            <div class="board-piece p6">♟</div>
+            <div class="board-piece p7">♟</div>
+            <div class="board-piece p8">♟</div>
+          </div>
+          <div class="board-footer"><span>COURSE PROGRESS</span><strong>72%</strong></div>
+          <div class="progress"><i style="width:72%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div><strong>♟</strong><span>Turn topics into pieces</span></div>
+      <div><strong>⚔</strong><span>Conquer with focus battles</span></div>
+      <div><strong>♛</strong><span>Prepare for the final boss</span></div>
+      <div><strong>♨</strong><span>Build momentum every day</span></div>
+    </section>
+
+    <section class="how" id="how">
+      <div class="section-heading">
+        <div class="eyebrow">THE CHESSMATE METHOD</div>
+        <h2>Your semester becomes a <em>strategy game.</em></h2>
+        <p>Every piece has a purpose. Every study session moves you closer to checkmate.</p>
+      </div>
+      <div class="steps">
+        <article class="step-card">
+          <span class="step-number">01</span>
+          <div class="step-icon">♟</div>
+          <h3>Build your board</h3>
+          <p>Add your courses, topics, past questions and exam dates. ChessMate maps your semester.</p>
+        </article>
+        <article class="step-card featured">
+          <span class="step-number">02</span>
+          <div class="step-icon">⚔</div>
+          <h3>Start a battle</h3>
+          <p>Choose a target and enter a focused study session. Finish the battle to capture the piece.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">03</span>
+          <div class="step-icon">♛</div>
+          <h3>Defeat the boss</h3>
+          <p>Topics fall away, your progress rises, and your exam becomes the final king to conquer.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="feature-strip" id="features">
+      <div>
+        <div class="eyebrow">BUILT FOR STUDENTS</div>
+        <h2>More than a planner.<br><em>A study game.</em></h2>
+      </div>
+      <div class="feature-grid">
+        <div><b>⚡ XP & Levels</b><span>Make progress visible and rewarding.</span></div>
+        <div><b>🔥 Study Streaks</b><span>Build consistency without the guilt.</span></div>
+        <div><b>👥 Friends</b><span>Add classmates by username and challenge them.</span></div>
+        <div><b>👑 Exam Bosses</b><span>See exactly how prepared you are.</span></div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="mini-board">♟ ♞ ♝ ♜ ♛ ♚</div>
+      <div>
+        <div class="eyebrow">YOUR MOVE</div>
+        <h2>Ready to make your first move?</h2>
+      </div>
+      <button class="btn btn-primary" data-open-auth="signup">Start ChessMate <span>→</span></button>
+    </section>
+  </main>
+
+  <footer><span>♞ ChessMate Study</span><span>Study smart. Play strategically.</span></footer>
+
+  <div class="modal-backdrop" id="authModal" aria-hidden="true">
+    <div class="auth-modal">
+      <button class="modal-close" id="closeAuth" aria-label="Close">×</button>
+      <div class="modal-piece">♞</div>
+      <div class="eyebrow" id="authEyebrow">WELCOME TO THE BOARD</div>
+      <h2 id="authTitle">Create your account</h2>
+      <p id="authSubtitle">Your semester. Your strategy. Your board.</p>
+      <form id="authForm">
+        <label id="usernameWrap">Username<input id="username" type="text" placeholder="@yourusername" autocomplete="username"></label>
+        <label id="displayNameWrap">Display name<input id="displayName" type="text" placeholder="Your name" autocomplete="name"></label>
+        <label>Email<input id="email" type="email" placeholder="you@example.com" required autocomplete="email"></label>
+        <label>Password<input id="password" type="password" placeholder="At least 6 characters" required autocomplete="new-password"></label>
+        <button class="btn btn-primary form-submit" type="submit" id="authSubmit">Create Account <span>→</span></button>
+      </form>
+      <p class="auth-switch" id="authSwitch">Already have an account? <button type="button" data-switch-auth="login">Log in</button></p>
+      <div class="auth-message" id="authMessage"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
