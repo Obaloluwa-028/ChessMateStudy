@@ -140,6 +140,15 @@ document.addEventListener("DOMContentLoaded", () => {
       usernameWrap.style.display = "flex";
       displayNameWrap.style.display = "flex";
 
+      /*
+       * IMPORTANT:
+       * Username and display name are active and required
+       * during signup.
+       */
+
+      usernameInput.disabled = false;
+      displayNameInput.disabled = false;
+
       usernameInput.required = true;
       displayNameInput.required = true;
 
@@ -165,6 +174,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       usernameWrap.style.display = "none";
       displayNameWrap.style.display = "none";
+
+      /*
+       * IMPORTANT:
+       * Hidden username/display-name fields must be disabled.
+       * Otherwise the browser can block the login form because
+       * those hidden fields are still marked as required.
+       */
+
+      usernameInput.disabled = true;
+      displayNameInput.disabled = true;
 
       usernameInput.required = false;
       displayNameInput.required = false;
@@ -502,6 +521,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         authForm.reset();
 
+        /*
+         * Keep the form in signup mode after reset.
+         * Re-enable the signup fields.
+         */
+
+        usernameInput.disabled = false;
+        displayNameInput.disabled = false;
+
+        usernameInput.required = true;
+        displayNameInput.required = true;
+
         return;
       }
 
@@ -662,6 +692,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       event.preventDefault();
 
+      /*
+       * Extra protection against browser-native validation
+       * interfering with our custom validation.
+       */
+
       if (authMode === "signup") {
 
         await signUp();
@@ -735,6 +770,26 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
       return "Too many attempts. Please wait a moment and try again.";
+    }
+
+
+    /*
+     * Username/profile related errors
+     */
+
+    if (
+      lower.includes("duplicate key") ||
+      lower.includes("profiles_username_key") ||
+      lower.includes("username")
+    ) {
+
+      if (
+        lower.includes("duplicate") ||
+        lower.includes("unique")
+      ) {
+
+        return "That username is already taken. Please choose another.";
+      }
     }
 
 
