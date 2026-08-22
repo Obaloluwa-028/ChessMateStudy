@@ -1,393 +1,471 @@
 /* =========================================================
    CHESSMATE STUDY
-   Authentication & Application Controller
+   Main Application
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-  console.log("♞ ChessMate app.js loaded.");
+  "use strict";
 
-  /* =========================================================
-     ELEMENTS
-     ========================================================= */
-
-  const authModal = document.getElementById("authModal");
-  const closeAuth = document.getElementById("closeAuth");
-  const authForm = document.getElementById("authForm");
-
-  const usernameWrap = document.getElementById("usernameWrap");
-  const displayNameWrap = document.getElementById("displayNameWrap");
-
-  const usernameInput = document.getElementById("username");
-  const displayNameInput = document.getElementById("displayName");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-
-  const authEyebrow = document.getElementById("authEyebrow");
-  const authTitle = document.getElementById("authTitle");
-  const authSubtitle = document.getElementById("authSubtitle");
-  const authSubmit = document.getElementById("authSubmit");
-  const authSwitch = document.getElementById("authSwitch");
-  const authMessage = document.getElementById("authMessage");
-
-  const boardSquares = document.getElementById("boardSquares");
-
-  let authMode = "signup";
-  let currentUser = null;
+  console.log("♞ ChessMate app.js loaded");
 
 
   /* =========================================================
-     SUPABASE
+     WAIT FOR PAGE
      ========================================================= */
 
-  const supabaseClient =
-    window.ChessMateSupabase || null;
+  document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("♞ ChessMate DOM ready");
 
 
-  if (supabaseClient) {
+    /* =======================================================
+       GET ELEMENTS
+       ======================================================= */
 
-    console.log(
-      "♞ ChessMate: Supabase client detected."
-    );
+    const authModal = document.getElementById("authModal");
+    const closeAuth = document.getElementById("closeAuth");
+    const authForm = document.getElementById("authForm");
 
-  } else {
+    const usernameWrap =
+      document.getElementById("usernameWrap");
 
-    console.warn(
-      "ChessMate: Supabase client not detected yet."
-    );
+    const displayNameWrap =
+      document.getElementById("displayNameWrap");
 
-  }
+    const usernameInput =
+      document.getElementById("username");
+
+    const displayNameInput =
+      document.getElementById("displayName");
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const authEyebrow =
+      document.getElementById("authEyebrow");
+
+    const authTitle =
+      document.getElementById("authTitle");
+
+    const authSubtitle =
+      document.getElementById("authSubtitle");
+
+    const authSubmit =
+      document.getElementById("authSubmit");
+
+    const authSwitch =
+      document.getElementById("authSwitch");
+
+    const authMessage =
+      document.getElementById("authMessage");
+
+    const boardSquares =
+      document.getElementById("boardSquares");
 
 
-  /* =========================================================
-     CHESSBOARD
-     ========================================================= */
-
-  function createChessboard() {
-
-    if (!boardSquares) return;
-
-    boardSquares.innerHTML = "";
-
-    for (let row = 0; row < 8; row++) {
-
-      for (let col = 0; col < 8; col++) {
-
-        const square =
-          document.createElement("div");
-
-        square.className =
-          (row + col) % 2 === 0
-            ? "square light"
-            : "square dark";
-
-        boardSquares.appendChild(square);
-      }
-    }
-  }
-
-  createChessboard();
-
-
-  /* =========================================================
-     OPEN AUTH MODAL
-     ========================================================= */
-
-  function openAuth(mode) {
-
-    mode = mode || "signup";
-
-    console.log(
-      "♞ Opening auth:",
-      mode
-    );
-
-    authMode = mode;
-
-    clearMessage();
-
-    if (authForm) {
-      authForm.reset();
-    }
-
-    updateAuthMode();
-
+    /* =======================================================
+       CHECK REQUIRED ELEMENTS
+       ======================================================= */
 
     if (!authModal) {
-
-      console.error(
-        "ChessMate: authModal was not found."
-      );
-
+      console.error("ChessMate ERROR: #authModal not found.");
       return;
     }
 
-
-    /*
-     * IMPORTANT:
-     * Your CSS uses .open, not .active.
-     */
-
-    authModal.classList.add("open");
-
-    authModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-    document.body.classList.add(
-      "modal-open"
-    );
-
-
-    console.log(
-      "♞ Auth modal opened."
-    );
-
-
-    setTimeout(function () {
-
-      if (authMode === "signup") {
-
-        if (usernameInput) {
-          usernameInput.focus();
-        }
-
-      } else {
-
-        if (emailInput) {
-          emailInput.focus();
-        }
-
-      }
-
-    }, 100);
-  }
-
-
-  /* =========================================================
-     CLOSE AUTH MODAL
-     ========================================================= */
-
-  function closeAuthModal() {
-
-    if (!authModal) return;
-
-    authModal.classList.remove("open");
-
-    authModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    document.body.classList.remove(
-      "modal-open"
-    );
-
-    clearMessage();
-  }
-
-
-  /* =========================================================
-     AUTH MODE
-     ========================================================= */
-
-  function updateAuthMode() {
-
-    if (!authEyebrow ||
-        !authTitle ||
-        !authSubtitle ||
-        !authSubmit ||
-        !authSwitch) {
-
-      console.error(
-        "ChessMate: Authentication elements missing."
-      );
-
+    if (!authForm) {
+      console.error("ChessMate ERROR: #authForm not found.");
       return;
     }
 
-
-    if (authMode === "signup") {
-
-      authEyebrow.textContent =
-        "WELCOME TO THE BOARD";
-
-      authTitle.textContent =
-        "Create your account";
-
-      authSubtitle.textContent =
-        "Your semester. Your strategy. Your board.";
+    console.log("♞ ChessMate authentication elements found");
 
 
-      if (usernameWrap) {
-        usernameWrap.style.display = "block";
-      }
+    /* =======================================================
+       SUPABASE
+       ======================================================= */
 
-      if (displayNameWrap) {
-        displayNameWrap.style.display = "block";
-      }
-
-
-      if (usernameInput) {
-
-        usernameInput.disabled = false;
-        usernameInput.required = true;
-
-      }
+    const supabaseClient =
+      window.ChessMateSupabase ||
+      window.supabaseClient;
 
 
-      if (displayNameInput) {
+    if (!supabaseClient) {
 
-        displayNameInput.disabled = false;
-        displayNameInput.required = true;
+      console.error(
+        "ChessMate ERROR: Supabase client not available."
+      );
 
-      }
-
-
-      if (passwordInput) {
-
-        passwordInput.autocomplete =
-          "new-password";
-
-      }
-
-
-      authSubmit.innerHTML =
-        'Create Account <span>→</span>';
-
-
-      authSwitch.innerHTML =
-        'Already have an account? ' +
-        '<button type="button" data-switch-auth="login">Log in</button>';
+      showMessage(
+        "ChessMate is not connected to Supabase. Please check index.html.",
+        "error"
+      );
 
     } else {
 
-      authEyebrow.textContent =
-        "WELCOME BACK";
+      console.log(
+        "♞ ChessMate Supabase client found"
+      );
 
-      authTitle.textContent =
-        "Log in to ChessMate";
-
-      authSubtitle.textContent =
-        "Continue your study journey.";
-
-
-      if (usernameWrap) {
-        usernameWrap.style.display = "none";
-      }
-
-      if (displayNameWrap) {
-        displayNameWrap.style.display = "none";
-      }
-
-
-      if (usernameInput) {
-
-        usernameInput.disabled = true;
-        usernameInput.required = false;
-
-      }
-
-
-      if (displayNameInput) {
-
-        displayNameInput.disabled = true;
-        displayNameInput.required = false;
-
-      }
-
-
-      if (passwordInput) {
-
-        passwordInput.autocomplete =
-          "current-password";
-
-      }
-
-
-      authSubmit.innerHTML =
-        'Log In <span>→</span>';
-
-
-      authSwitch.innerHTML =
-        'New to ChessMate? ' +
-        '<button type="button" data-switch-auth="signup">Create an account</button>';
     }
 
 
-    const switchButton =
-      authSwitch.querySelector(
-        "[data-switch-auth]"
+    /* =======================================================
+       STATE
+       ======================================================= */
+
+    let authMode = "signup";
+    let currentUser = null;
+
+
+    /* =======================================================
+       CHESSBOARD
+       ======================================================= */
+
+    function createChessboard() {
+
+      if (!boardSquares) return;
+
+      boardSquares.innerHTML = "";
+
+      for (let row = 0; row < 8; row++) {
+
+        for (let col = 0; col < 8; col++) {
+
+          const square =
+            document.createElement("div");
+
+          square.className =
+            (row + col) % 2 === 0
+              ? "square light"
+              : "square dark";
+
+          boardSquares.appendChild(square);
+        }
+      }
+    }
+
+    createChessboard();
+
+
+    /* =======================================================
+       MESSAGE
+       ======================================================= */
+
+    function showMessage(message, type = "info") {
+
+      if (!authMessage) return;
+
+      authMessage.textContent = message;
+
+      authMessage.className =
+        "auth-message " + type;
+    }
+
+
+    function clearMessage() {
+
+      if (!authMessage) return;
+
+      authMessage.textContent = "";
+
+      authMessage.className =
+        "auth-message";
+    }
+
+
+    /* =======================================================
+       OPEN AUTH MODAL
+       ======================================================= */
+
+    function openAuth(mode) {
+
+      authMode = mode || "signup";
+
+      console.log(
+        "♞ Opening authentication:",
+        authMode
+      );
+
+      clearMessage();
+
+      updateAuthMode();
+
+      authModal.classList.add("open");
+
+      authModal.classList.add("active");
+
+      authModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.classList.add(
+        "modal-open"
       );
 
 
-    if (switchButton) {
+      /*
+       * Reset only the input values.
+       */
 
-      switchButton.onclick = function () {
+      if (usernameInput)
+        usernameInput.value = "";
 
-        openAuth(
-          switchButton.dataset.switchAuth
-        );
+      if (displayNameInput)
+        displayNameInput.value = "";
 
-      };
+      if (emailInput)
+        emailInput.value = "";
+
+      if (passwordInput)
+        passwordInput.value = "";
+
+
+      setTimeout(function () {
+
+        if (authMode === "signup") {
+
+          if (usernameInput)
+            usernameInput.focus();
+
+        } else {
+
+          if (emailInput)
+            emailInput.focus();
+
+        }
+
+      }, 100);
 
     }
-  }
 
 
-  /* =========================================================
-     AUTH BUTTONS
-     ========================================================= */
+    /* =======================================================
+       CLOSE AUTH MODAL
+       ======================================================= */
 
-  const authButtons =
-    document.querySelectorAll(
-      "[data-open-auth]"
+    function closeAuthModal() {
+
+      console.log(
+        "♞ Closing authentication modal"
+      );
+
+      authModal.classList.remove("open");
+
+      authModal.classList.remove("active");
+
+      authModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+      clearMessage();
+    }
+
+
+    /* =======================================================
+       AUTH MODE
+       ======================================================= */
+
+    function updateAuthMode() {
+
+      if (authMode === "signup") {
+
+        if (authEyebrow)
+          authEyebrow.textContent =
+            "WELCOME TO THE BOARD";
+
+        if (authTitle)
+          authTitle.textContent =
+            "Create your account";
+
+        if (authSubtitle)
+          authSubtitle.textContent =
+            "Your semester. Your strategy. Your board.";
+
+
+        if (usernameWrap)
+          usernameWrap.style.display = "block";
+
+        if (displayNameWrap)
+          displayNameWrap.style.display = "block";
+
+
+        if (usernameInput) {
+          usernameInput.disabled = false;
+          usernameInput.required = true;
+        }
+
+        if (displayNameInput) {
+          displayNameInput.disabled = false;
+          displayNameInput.required = true;
+        }
+
+
+        if (emailInput)
+          emailInput.required = true;
+
+        if (passwordInput) {
+          passwordInput.required = true;
+          passwordInput.autocomplete =
+            "new-password";
+        }
+
+
+        if (authSubmit)
+          authSubmit.innerHTML =
+            'Create Account <span>→</span>';
+
+
+        if (authSwitch)
+          authSwitch.innerHTML =
+            'Already have an account? ' +
+            '<button type="button" data-switch-auth="login">' +
+            'Log in' +
+            '</button>';
+
+      } else {
+
+        if (authEyebrow)
+          authEyebrow.textContent =
+            "WELCOME BACK";
+
+        if (authTitle)
+          authTitle.textContent =
+            "Log in to ChessMate";
+
+        if (authSubtitle)
+          authSubtitle.textContent =
+            "Continue your study journey.";
+
+
+        if (usernameWrap)
+          usernameWrap.style.display = "none";
+
+        if (displayNameWrap)
+          displayNameWrap.style.display = "none";
+
+
+        if (usernameInput) {
+          usernameInput.disabled = true;
+          usernameInput.required = false;
+        }
+
+        if (displayNameInput) {
+          displayNameInput.disabled = true;
+          displayNameInput.required = false;
+        }
+
+
+        if (emailInput)
+          emailInput.required = true;
+
+        if (passwordInput) {
+          passwordInput.required = true;
+          passwordInput.autocomplete =
+            "current-password";
+        }
+
+
+        if (authSubmit)
+          authSubmit.innerHTML =
+            'Log In <span>→</span>';
+
+
+        if (authSwitch)
+          authSwitch.innerHTML =
+            'New to ChessMate? ' +
+            '<button type="button" data-switch-auth="signup">' +
+            'Create an account' +
+            '</button>';
+      }
+    }
+
+
+    /* =======================================================
+       AUTH BUTTONS
+       ======================================================= */
+
+    const authButtons =
+      document.querySelectorAll(
+        "[data-open-auth]"
+      );
+
+
+    console.log(
+      "♞ ChessMate auth buttons found:",
+      authButtons.length
     );
 
 
-  console.log(
-    "♞ ChessMate auth buttons found:",
-    authButtons.length
-  );
+    authButtons.forEach(function (button) {
+
+      button.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+          const mode =
+            button.getAttribute(
+              "data-open-auth"
+            );
+
+          console.log(
+            "♞ Auth button clicked:",
+            mode
+          );
+
+          openAuth(mode);
+
+        }
+      );
+
+    });
 
 
-  authButtons.forEach(function (button) {
+    /* =======================================================
+       AUTH SWITCH BUTTON
+       ======================================================= */
 
-    button.addEventListener(
+    authSwitch?.addEventListener(
       "click",
       function (event) {
 
+        const button =
+          event.target.closest(
+            "[data-switch-auth]"
+          );
+
+        if (!button) return;
+
         event.preventDefault();
-        event.stopPropagation();
 
-        const mode =
+        openAuth(
           button.getAttribute(
-            "data-open-auth"
-          ) || "signup";
-
-
-        console.log(
-          "♞ Auth button clicked:",
-          mode
+            "data-switch-auth"
+          )
         );
-
-
-        openAuth(mode);
 
       }
     );
 
-  });
 
+    /* =======================================================
+       CLOSE BUTTON
+       ======================================================= */
 
-  /* =========================================================
-     CLOSE BUTTON
-     ========================================================= */
-
-  if (closeAuth) {
-
-    closeAuth.addEventListener(
+    closeAuth?.addEventListener(
       "click",
       function (event) {
 
@@ -398,20 +476,18 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
 
-  }
 
-
-  /* =========================================================
-     CLOSE BY BACKDROP
-     ========================================================= */
-
-  if (authModal) {
+    /* =======================================================
+       CLICK OUTSIDE MODAL
+       ======================================================= */
 
     authModal.addEventListener(
       "click",
       function (event) {
 
-        if (event.target === authModal) {
+        if (
+          event.target === authModal
+        ) {
 
           closeAuthModal();
 
@@ -420,352 +496,437 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
 
-  }
 
+    /* =======================================================
+       ESCAPE
+       ======================================================= */
 
-  /* =========================================================
-     ESCAPE KEY
-     ========================================================= */
+    document.addEventListener(
+      "keydown",
+      function (event) {
 
-  document.addEventListener(
-    "keydown",
-    function (event) {
+        if (
+          event.key === "Escape" &&
+          authModal.classList.contains("open")
+        ) {
 
-      if (
-        event.key === "Escape" &&
-        authModal &&
-        authModal.classList.contains("open")
-      ) {
-
-        closeAuthModal();
-
-      }
-
-    }
-  );
-
-
-  /* =========================================================
-     SMOOTH SCROLL
-     ========================================================= */
-
-  document
-    .querySelectorAll("[data-scroll]")
-    .forEach(function (button) {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          const target =
-            document.querySelector(
-              button.dataset.scroll
-            );
-
-          if (target) {
-
-            target.scrollIntoView({
-              behavior: "smooth"
-            });
-
-          }
+          closeAuthModal();
 
         }
-      );
 
-    });
-
-
-  /* =========================================================
-     USERNAME
-     ========================================================= */
-
-  function normalizeUsername(username) {
-
-    return username
-      .trim()
-      .toLowerCase()
-      .replace(/^@/, "")
-      .replace(/\s+/g, "");
-  }
-
-
-  function isValidUsername(username) {
-
-    return /^[a-z0-9_]{3,20}$/.test(
-      username
-    );
-  }
-
-
-  /* =========================================================
-     VALIDATION
-     ========================================================= */
-
-  function isValidEmail(email) {
-
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      email
-    );
-  }
-
-
-  function isValidPassword(password) {
-
-    return password.length >= 6;
-  }
-
-
-  /* =========================================================
-     MESSAGE
-     ========================================================= */
-
-  function showMessage(
-    message,
-    type
-  ) {
-
-    if (!authMessage) return;
-
-    authMessage.textContent =
-      message;
-
-    authMessage.className =
-      "auth-message " +
-      (type || "info");
-  }
-
-
-  function clearMessage() {
-
-    if (!authMessage) return;
-
-    authMessage.textContent = "";
-
-    authMessage.className =
-      "auth-message";
-  }
-
-
-  /* =========================================================
-     LOADING
-     ========================================================= */
-
-  function setLoading(loading) {
-
-    if (!authSubmit) return;
-
-    authSubmit.disabled =
-      loading;
-
-
-    if (loading) {
-
-      authSubmit.innerHTML =
-        "Please wait...";
-
-      return;
-    }
-
-
-    if (authMode === "signup") {
-
-      authSubmit.innerHTML =
-        'Create Account <span>→</span>';
-
-    } else {
-
-      authSubmit.innerHTML =
-        'Log In <span>→</span>';
-
-    }
-  }
-
-
-  /* =========================================================
-     SIGN UP
-     ========================================================= */
-
-  async function signUp() {
-
-    console.log(
-      "♞ ChessMate: Signup started."
+      }
     );
 
 
-    if (!supabaseClient) {
+    /* =======================================================
+       SMOOTH SCROLL
+       ======================================================= */
 
-      showMessage(
-        "Supabase is not connected. Please check the Supabase configuration in index.html.",
-        "error"
-      );
+    document
+      .querySelectorAll("[data-scroll]")
+      .forEach(function (button) {
 
-      return;
-    }
+        button.addEventListener(
+          "click",
+          function () {
 
+            const target =
+              document.querySelector(
+                button.getAttribute(
+                  "data-scroll"
+                )
+              );
 
-    const username =
-      normalizeUsername(
-        usernameInput.value
-      );
+            if (target) {
 
-    const displayName =
-      displayNameInput.value.trim();
-
-    const email =
-      emailInput.value
-        .trim()
-        .toLowerCase();
-
-    const password =
-      passwordInput.value;
-
-
-    if (!username) {
-
-      showMessage(
-        "Please choose a username.",
-        "error"
-      );
-
-      usernameInput.focus();
-
-      return;
-    }
-
-
-    if (!isValidUsername(username)) {
-
-      showMessage(
-        "Username must be 3–20 characters and use only letters, numbers, and underscores.",
-        "error"
-      );
-
-      usernameInput.focus();
-
-      return;
-    }
-
-
-    if (!displayName) {
-
-      showMessage(
-        "Please enter your display name.",
-        "error"
-      );
-
-      displayNameInput.focus();
-
-      return;
-    }
-
-
-    if (!isValidEmail(email)) {
-
-      showMessage(
-        "Please enter a valid email address.",
-        "error"
-      );
-
-      emailInput.focus();
-
-      return;
-    }
-
-
-    if (!isValidPassword(password)) {
-
-      showMessage(
-        "Password must be at least 6 characters.",
-        "error"
-      );
-
-      passwordInput.focus();
-
-      return;
-    }
-
-
-    setLoading(true);
-
-    clearMessage();
-
-
-    try {
-
-      console.log(
-        "♞ ChessMate: Sending signup request to Supabase..."
-      );
-
-
-      const result =
-        await supabaseClient.auth.signUp({
-
-          email: email,
-
-          password: password,
-
-          options: {
-
-            data: {
-
-              username: username,
-
-              display_name:
-                displayName
+              target.scrollIntoView({
+                behavior: "smooth"
+              });
 
             }
 
           }
+        );
 
-        });
+      });
 
+
+    /* =======================================================
+       USERNAME
+       ======================================================= */
+
+    function normalizeUsername(username) {
+
+      return username
+        .trim()
+        .toLowerCase()
+        .replace(/^@/, "")
+        .replace(/\s+/g, "");
+    }
+
+
+    function isValidUsername(username) {
+
+      return /^[a-z0-9_]{3,20}$/.test(
+        username
+      );
+    }
+
+
+    /* =======================================================
+       EMAIL
+       ======================================================= */
+
+    function isValidEmail(email) {
+
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        email
+      );
+    }
+
+
+    /* =======================================================
+       LOADING
+       ======================================================= */
+
+    function setLoading(loading) {
+
+      if (!authSubmit) return;
+
+      authSubmit.disabled = loading;
+
+      if (loading) {
+
+        authSubmit.textContent =
+          "Please wait...";
+
+      } else {
+
+        if (authMode === "signup") {
+
+          authSubmit.innerHTML =
+            'Create Account <span>→</span>';
+
+        } else {
+
+          authSubmit.innerHTML =
+            'Log In <span>→</span>';
+
+        }
+
+      }
+    }
+
+
+    /* =======================================================
+       SIGN UP
+       ======================================================= */
+
+    async function signUp() {
 
       console.log(
-        "♞ Supabase signup result:",
-        result
+        "♞ ChessMate signup started"
       );
 
 
-      if (result.error) {
-
-        throw result.error;
-
-      }
-
-
-      const data =
-        result.data;
-
-
-      if (
-        data &&
-        data.user &&
-        !data.session
-      ) {
+      if (!supabaseClient) {
 
         showMessage(
-          "Account created! Please check your email to confirm your account.",
-          "success"
+          "Supabase is not connected. Please check your configuration.",
+          "error"
         );
-
-        authForm.reset();
 
         return;
       }
 
 
-      if (
-        data &&
-        data.session
-      ) {
+      const username =
+        normalizeUsername(
+          usernameInput?.value || ""
+        );
 
-        currentUser =
-          data.user;
+      const displayName =
+        (displayNameInput?.value || "")
+          .trim();
+
+      const email =
+        (emailInput?.value || "")
+          .trim()
+          .toLowerCase();
+
+      const password =
+        passwordInput?.value || "";
+
+
+      if (!isValidUsername(username)) {
+
+        showMessage(
+          "Username must be 3–20 characters and use only letters, numbers, and underscores.",
+          "error"
+        );
+
+        usernameInput?.focus();
+
+        return;
+      }
+
+
+      if (!displayName) {
+
+        showMessage(
+          "Please enter your display name.",
+          "error"
+        );
+
+        displayNameInput?.focus();
+
+        return;
+      }
+
+
+      if (!isValidEmail(email)) {
+
+        showMessage(
+          "Please enter a valid email address.",
+          "error"
+        );
+
+        emailInput?.focus();
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Password must be at least 6 characters.",
+          "error"
+        );
+
+        passwordInput?.focus();
+
+        return;
+      }
+
+
+      setLoading(true);
+
+      clearMessage();
+
+
+      try {
+
+        console.log(
+          "♞ Sending signup request to Supabase..."
+        );
+
+
+        const result =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+
+              data: {
+
+                username: username,
+
+                display_name: displayName
+
+              }
+
+            }
+
+          });
+
+
+        console.log(
+          "♞ Supabase signup response:",
+          result
+        );
+
+
+        if (result.error) {
+
+          throw result.error;
+
+        }
+
+
+        const data =
+          result.data;
+
+
+        if (
+          data &&
+          data.user &&
+          !data.session
+        ) {
+
+          showMessage(
+            "Account created! Please check your email and confirm your account.",
+            "success"
+          );
+
+          authForm.reset();
+
+          return;
+        }
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          currentUser =
+            data.user;
+
+          showMessage(
+            "Account created successfully! Welcome to ChessMate.",
+            "success"
+          );
+
+          setTimeout(
+            function () {
+
+              closeAuthModal();
+
+              handleLoggedInUser(
+                data.user
+              );
+
+            },
+            800
+          );
+
+          return;
+        }
 
 
         showMessage(
-          "Account created successfully! Welcome to ChessMate Study.",
+          "Account created successfully!",
+          "success"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "♞ ChessMate signup error:",
+          error
+        );
+
+        showMessage(
+          getFriendlyAuthError(error),
+          "error"
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+    }
+
+
+    /* =======================================================
+       LOGIN
+       ======================================================= */
+
+    async function logIn() {
+
+      console.log(
+        "♞ ChessMate login started"
+      );
+
+
+      if (!supabaseClient) {
+
+        showMessage(
+          "Supabase is not connected. Please check your configuration.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const email =
+        (emailInput?.value || "")
+          .trim()
+          .toLowerCase();
+
+      const password =
+        passwordInput?.value || "";
+
+
+      if (!isValidEmail(email)) {
+
+        showMessage(
+          "Please enter a valid email address.",
+          "error"
+        );
+
+        emailInput?.focus();
+
+        return;
+      }
+
+
+      if (!password) {
+
+        showMessage(
+          "Please enter your password.",
+          "error"
+        );
+
+        passwordInput?.focus();
+
+        return;
+      }
+
+
+      setLoading(true);
+
+      clearMessage();
+
+
+      try {
+
+        const result =
+          await supabaseClient.auth
+            .signInWithPassword({
+
+              email: email,
+
+              password: password
+
+            });
+
+
+        console.log(
+          "♞ Login response:",
+          result
+        );
+
+
+        if (result.error) {
+
+          throw result.error;
+
+        }
+
+
+        currentUser =
+          result.data.user;
+
+
+        showMessage(
+          "Welcome back! Your board is ready.",
           "success"
         );
 
@@ -776,183 +937,42 @@ document.addEventListener("DOMContentLoaded", function () {
             closeAuthModal();
 
             handleLoggedInUser(
-              data.user
+              result.data.user
             );
 
           },
-          1000
+          700
         );
 
-        return;
-      }
+      } catch (error) {
 
+        console.error(
+          "ChessMate login error:",
+          error
+        );
 
-      showMessage(
-        "Account created successfully!",
-        "success"
-      );
+        showMessage(
+          getFriendlyAuthError(error),
+          "error"
+        );
 
+      } finally {
 
-    } catch (error) {
-
-      console.error(
-        "♞ ChessMate signup error:",
-        error
-      );
-
-
-      showMessage(
-        getFriendlyAuthError(error),
-        "error"
-      );
-
-    } finally {
-
-      setLoading(false);
-
-    }
-  }
-
-
-  /* =========================================================
-     LOGIN
-     ========================================================= */
-
-  async function logIn() {
-
-    if (!supabaseClient) {
-
-      showMessage(
-        "Supabase is not connected. Please check the Supabase configuration in index.html.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    const email =
-      emailInput.value
-        .trim()
-        .toLowerCase();
-
-    const password =
-      passwordInput.value;
-
-
-    if (!isValidEmail(email)) {
-
-      showMessage(
-        "Please enter a valid email address.",
-        "error"
-      );
-
-      emailInput.focus();
-
-      return;
-    }
-
-
-    if (!password) {
-
-      showMessage(
-        "Please enter your password.",
-        "error"
-      );
-
-      passwordInput.focus();
-
-      return;
-    }
-
-
-    setLoading(true);
-
-    clearMessage();
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth
-          .signInWithPassword({
-
-            email: email,
-
-            password: password
-
-          });
-
-
-      if (error) {
-
-        throw error;
+        setLoading(false);
 
       }
-
-
-      currentUser =
-        data.user;
-
-
-      showMessage(
-        "Welcome back! Your board is ready.",
-        "success"
-      );
-
-
-      setTimeout(
-        function () {
-
-          closeAuthModal();
-
-          handleLoggedInUser(
-            data.user
-          );
-
-        },
-        800
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "ChessMate login error:",
-        error
-      );
-
-
-      showMessage(
-        getFriendlyAuthError(error),
-        "error"
-      );
-
-    } finally {
-
-      setLoading(false);
-
     }
-  }
 
 
-  /* =========================================================
-     FORM SUBMIT
-     ========================================================= */
-
-  if (authForm) {
+    /* =======================================================
+       FORM SUBMISSION
+       ======================================================= */
 
     authForm.addEventListener(
       "submit",
       async function (event) {
 
         event.preventDefault();
-
-        event.stopPropagation();
-
 
         console.log(
           "♞ ChessMate form submitted:",
@@ -973,176 +993,166 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
 
-  } else {
 
-    console.error(
-      "ChessMate: authForm not found."
-    );
+    /* =======================================================
+       FRIENDLY ERRORS
+       ======================================================= */
 
-  }
+    function getFriendlyAuthError(error) {
 
+      const message =
+        error?.message ||
+        "Something went wrong. Please try again.";
 
-  /* =========================================================
-     FRIENDLY ERRORS
-     ========================================================= */
-
-  function getFriendlyAuthError(error) {
-
-    const message =
-      error?.message ||
-      "Something went wrong. Please try again.";
-
-    const lower =
-      message.toLowerCase();
+      const lower =
+        message.toLowerCase();
 
 
-    if (
-      lower.includes("invalid api key")
-    ) {
+      if (
+        lower.includes(
+          "invalid login credentials"
+        )
+      ) {
 
-      return (
-        "Supabase rejected the API key. " +
-        "Please check the Publishable key in index.html."
-      );
-    }
-
-
-    if (
-      lower.includes("invalid login credentials")
-    ) {
-
-      return (
-        "Incorrect email or password. " +
-        "Please try again."
-      );
-    }
-
-
-    if (
-      lower.includes("email not confirmed")
-    ) {
-
-      return (
-        "Please confirm your email address before logging in."
-      );
-    }
-
-
-    if (
-      lower.includes("user already registered")
-    ) {
-
-      return (
-        "An account with this email already exists. Try logging in."
-      );
-    }
-
-
-    if (
-      lower.includes("password should be")
-    ) {
-
-      return (
-        "Your password must be at least 6 characters."
-      );
-    }
-
-
-    if (
-      lower.includes("rate limit")
-    ) {
-
-      return (
-        "Too many attempts. Please wait a moment and try again."
-      );
-    }
-
-
-    if (
-      lower.includes("duplicate") &&
-      lower.includes("username")
-    ) {
-
-      return (
-        "That username is already taken. Please choose another."
-      );
-    }
-
-
-    if (
-      lower.includes("failed to fetch")
-    ) {
-
-      return (
-        "Unable to connect to Supabase. Please check your internet connection."
-      );
-    }
-
-
-    return message;
-  }
-
-
-  /* =========================================================
-     SESSION
-     ========================================================= */
-
-  async function checkCurrentSession() {
-
-    if (!supabaseClient) return;
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth
-          .getSession();
-
-
-      if (error) {
-
-        throw error;
+        return "Incorrect email or password.";
 
       }
 
 
-      if (data.session) {
+      if (
+        lower.includes(
+          "email not confirmed"
+        )
+      ) {
 
-        currentUser =
-          data.session.user;
+        return "Please confirm your email before logging in.";
 
-        handleLoggedInUser(
-          data.session.user
+      }
+
+
+      if (
+        lower.includes(
+          "user already registered"
+        )
+      ) {
+
+        return "This email is already registered. Try logging in.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "invalid api key"
+        )
+      ) {
+
+        return "The Supabase API key is invalid. Please check the Publishable key in index.html.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "failed to fetch"
+        )
+      ) {
+
+        return "Could not connect to Supabase. Please check your internet connection and Supabase URL.";
+
+      }
+
+
+      if (
+        lower.includes(
+          "rate limit"
+        )
+      ) {
+
+        return "Too many attempts. Please wait a moment and try again.";
+
+      }
+
+
+      if (
+        lower.includes("duplicate") &&
+        lower.includes("username")
+      ) {
+
+        return "That username is already taken.";
+
+      }
+
+
+      return message;
+
+    }
+
+
+    /* =======================================================
+       SESSION
+       ======================================================= */
+
+    async function checkCurrentSession() {
+
+      if (!supabaseClient) return;
+
+
+      try {
+
+        const result =
+          await supabaseClient.auth
+            .getSession();
+
+
+        if (result.error) {
+
+          console.error(
+            "Session error:",
+            result.error
+          );
+
+          return;
+        }
+
+
+        if (
+          result.data &&
+          result.data.session
+        ) {
+
+          currentUser =
+            result.data.session.user;
+
+          handleLoggedInUser(
+            currentUser
+          );
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "ChessMate session error:",
+          error
         );
 
       }
 
-    } catch (error) {
-
-      console.error(
-        "ChessMate session error:",
-        error
-      );
-
     }
-  }
 
 
-  /* =========================================================
-     AUTH STATE
-     ========================================================= */
+    /* =======================================================
+       AUTH STATE
+       ======================================================= */
 
-  if (supabaseClient) {
+    if (supabaseClient) {
 
-    supabaseClient.auth
-      .onAuthStateChange(
+      supabaseClient.auth.onAuthStateChange(
         function (event, session) {
 
           console.log(
-            "ChessMate auth event:",
+            "♞ Auth state:",
             event
           );
 
@@ -1154,152 +1164,155 @@ document.addEventListener("DOMContentLoaded", function () {
 
           } else {
 
-            currentUser =
-              null;
+            currentUser = null;
 
           }
 
         }
       );
 
-  }
+    }
 
 
-  /* =========================================================
-     LOGGED-IN USER
-     ========================================================= */
+    /* =======================================================
+       LOGGED IN USER
+       ======================================================= */
 
-  function handleLoggedInUser(user) {
+    function handleLoggedInUser(user) {
 
-    if (!user) return;
-
-
-    const displayName =
-      user.user_metadata?.display_name ||
-      user.user_metadata?.username ||
-      user.email?.split("@")[0] ||
-      "Student";
+      if (!user) return;
 
 
-    const loginButtons =
-      document.querySelectorAll(
-        '[data-open-auth="login"]'
+      const displayName =
+        user.user_metadata?.display_name ||
+        user.user_metadata?.username ||
+        user.email?.split("@")[0] ||
+        "Student";
+
+
+      const loginButtons =
+        document.querySelectorAll(
+          '[data-open-auth="login"]'
+        );
+
+
+      loginButtons.forEach(
+        function (button) {
+
+          button.textContent =
+            "Hi, " + displayName;
+
+          button.removeAttribute(
+            "data-open-auth"
+          );
+
+        }
       );
 
 
-    loginButtons.forEach(
-      function (button) {
+      const signupButton =
+        document.querySelector(
+          ".navbar [data-open-auth='signup']"
+        );
 
-        button.textContent =
-          `Hi, ${displayName}`;
 
-        button.removeAttribute(
+      if (signupButton) {
+
+        signupButton.textContent =
+          "Log out";
+
+        signupButton.removeAttribute(
           "data-open-auth"
         );
 
+
+        signupButton.addEventListener(
+          "click",
+          logOut
+        );
+
       }
+
+    }
+
+
+    /* =======================================================
+       LOGOUT
+       ======================================================= */
+
+    async function logOut() {
+
+      if (!supabaseClient) return;
+
+
+      try {
+
+        const result =
+          await supabaseClient.auth
+            .signOut();
+
+
+        if (result.error) {
+
+          throw result.error;
+
+        }
+
+
+        currentUser = null;
+
+        window.location.reload();
+
+      } catch (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =======================================================
+       INITIALIZE
+       ======================================================= */
+
+    updateAuthMode();
+
+    checkCurrentSession();
+
+
+    /* =======================================================
+       PUBLIC API
+       ======================================================= */
+
+    window.ChessMate = {
+
+      getUser: function () {
+        return currentUser;
+      },
+
+      openLogin: function () {
+        openAuth("login");
+      },
+
+      openSignup: function () {
+        openAuth("signup");
+      },
+
+      logout: function () {
+        logOut();
+      }
+
+    };
+
+
+    console.log(
+      "♞ ChessMate Study initialized successfully."
     );
 
+  });
 
-    const signupButton =
-      document.querySelector(
-        ".navbar [data-open-auth='signup']"
-      );
-
-
-    if (signupButton) {
-
-      signupButton.textContent =
-        "Log out";
-
-      signupButton.removeAttribute(
-        "data-open-auth"
-      );
-
-      signupButton.onclick =
-        logOut;
-
-    }
-  }
-
-
-  /* =========================================================
-     LOGOUT
-     ========================================================= */
-
-  async function logOut() {
-
-    if (!supabaseClient) return;
-
-
-    try {
-
-      const {
-        error
-      } =
-        await supabaseClient.auth
-          .signOut();
-
-
-      if (error) {
-
-        throw error;
-
-      }
-
-
-      currentUser =
-        null;
-
-      window.location.reload();
-
-    } catch (error) {
-
-      console.error(
-        "ChessMate logout error:",
-        error
-      );
-
-    }
-  }
-
-
-  /* =========================================================
-     INITIALIZE
-     ========================================================= */
-
-  updateAuthMode();
-
-  checkCurrentSession();
-
-
-  /* =========================================================
-     PUBLIC DEBUG API
-     ========================================================= */
-
-  window.ChessMate = {
-
-    getUser: function () {
-      return currentUser;
-    },
-
-    openLogin: function () {
-      openAuth("login");
-    },
-
-    openSignup: function () {
-      openAuth("signup");
-    },
-
-    logout: function () {
-      logOut();
-    }
-
-  };
-
-
-  console.log(
-    "♞ ChessMate Study initialized successfully."
-  );
-
-});
+})();
