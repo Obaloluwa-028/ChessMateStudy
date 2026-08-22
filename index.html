@@ -461,43 +461,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
   <script>
-
     /*
      * CHESSMATE STUDY — SUPABASE CONFIGURATION
-     *
-     * Project URL:
-     * https://nnkuosivpwedjacwklol.supabase.co
-     *
-     * IMPORTANT:
-     * Replace ONLY the value below with the Publishable key
-     * you copied from your Supabase dashboard.
-     *
-     * Do NOT use the sb_secret_ key here.
      */
 
     const SUPABASE_URL =
       "https://nnkuosivpwedjacwklol.supabase.co";
 
+    /*
+     * IMPORTANT:
+     * Paste the Publishable key from:
+     * Supabase → Project Settings → API
+     *
+     * Do NOT use sb_secret_ or service_role.
+     */
+
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
-
-
-    /*
-     * Create the Supabase client.
-     *
-     * app.js will use this variable for:
-     * - Sign up
-     * - Log in
-     * - Log out
-     * - User sessions
-     * - Profiles
-     * - Study progress
-     * - Friends
-     * - XP
-     * - Streaks
-     */
 
     const supabaseClient =
       window.supabase.createClient(
@@ -505,8 +486,8 @@
         SUPABASE_PUBLISHABLE_KEY
       );
 
+    console.log("ChessMate: Supabase client created.");
   </script>
-
 
   <!-- CHESSMATE APPLICATION -->
   <script src="app.js"></script>
