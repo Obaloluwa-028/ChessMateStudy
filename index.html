@@ -456,41 +456,21 @@
 
 
   <!-- =========================================================
-       SUPABASE
-       ========================================================= -->
+     SUPABASE
+     ========================================================= -->
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    /*
-     * CHESSMATE STUDY — SUPABASE CONFIGURATION
-     */
+<script>
+  window.CHESSMATE_SUPABASE_URL =
+    "https://nnkuosivpwedjacwklol.supabase.co";
 
-    const SUPABASE_URL =
-      "https://nnkuosivpwedjacwklol.supabase.co";
+  window.CHESSMATE_SUPABASE_KEY =
+    "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
+</script>
 
-    /*
-     * IMPORTANT:
-     * Paste the Publishable key from:
-     * Supabase → Project Settings → API
-     *
-     * Do NOT use sb_secret_ or service_role.
-     */
-
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
-
-    console.log("ChessMate: Supabase client created.");
-  </script>
-
-  <!-- CHESSMATE APPLICATION -->
-  <script src="app.js"></script>
+<!-- CHESSMATE APPLICATION -->
+<script src="app.js"></script>
 
 </body>
 </html>
