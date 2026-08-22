@@ -455,18 +455,38 @@
   </div>
 
 
-  <!-- =========================================================
-     SUPABASE
-     ========================================================= -->
+  <script>
+  /* =========================================================
+     CHESSMATE STUDY — SUPABASE
+     ========================================================= */
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  window.CHESSMATE_SUPABASE_URL =
+  const CHESSMATE_SUPABASE_URL =
     "https://nnkuosivpwedjacwklol.supabase.co";
 
-  window.CHESSMATE_SUPABASE_KEY =
+  const CHESSMATE_SUPABASE_KEY =
     "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
+
+
+  /* Make sure the Supabase library loaded */
+  if (!window.supabase) {
+
+    console.error(
+      "ChessMate: Supabase library failed to load."
+    );
+
+  } else {
+
+    window.ChessMateSupabase =
+      window.supabase.createClient(
+        CHESSMATE_SUPABASE_URL,
+        CHESSMATE_SUPABASE_KEY
+      );
+
+    console.log(
+      "♞ ChessMate: Supabase client initialized."
+    );
+
+  }
 </script>
 
 <!-- CHESSMATE APPLICATION -->
