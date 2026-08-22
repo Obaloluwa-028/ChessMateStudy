@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f7f4ec" />
+
   <title>ChessMate Study — Study Like a Chess Game</title>
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -14,37 +16,72 @@
     rel="stylesheet"
   >
 
+  <!-- ChessMate stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
+
 <body>
 
+  <!-- Background -->
   <div class="site-bg"></div>
 
+
+  <!-- =========================================================
+       NAVBAR
+       ========================================================= -->
+
   <header class="navbar">
+
     <a class="brand" href="#">
       <span class="brand-mark">♞</span>
       <span>ChessMate <b>Study</b></span>
     </a>
 
-    <nav class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#features">Features</a>
 
-      <button class="btn btn-ghost" data-open-auth="login">
+    <nav class="nav-links">
+
+      <a href="#how">
+        How it works
+      </a>
+
+      <a href="#features">
+        Features
+      </a>
+
+      <button
+        type="button"
+        class="btn btn-ghost"
+        data-open-auth="login"
+      >
         Log in
       </button>
 
-      <button class="btn btn-dark" data-open-auth="signup">
+      <button
+        type="button"
+        class="btn btn-dark"
+        data-open-auth="signup"
+      >
         Get Started
       </button>
+
     </nav>
+
   </header>
 
 
+
+  <!-- =========================================================
+       MAIN
+       ========================================================= -->
+
   <main>
 
-    <!-- HERO -->
+
+    <!-- =======================================================
+         HERO
+         ======================================================= -->
+
     <section class="hero">
 
       <div class="hero-copy">
@@ -53,56 +90,94 @@
           <span>♟</span> YOUR SEMESTER. YOUR BOARD.
         </div>
 
+
         <h1>
           Study like a <em>chess game.</em><br>
           Win your semester.
         </h1>
 
+
         <p class="hero-text">
-          Turn courses into a strategic board. Conquer topics, build study streaks,
-          challenge friends, and face your exams as the final boss.
+          Turn courses into a strategic board. Conquer topics,
+          build study streaks, challenge friends, and face your
+          exams as the final boss.
         </p>
+
 
         <div class="hero-actions">
 
-          <button class="btn btn-primary" data-open-auth="signup">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-open-auth="signup"
+          >
             Create free account <span>→</span>
           </button>
 
-          <button class="btn btn-light" data-scroll="#how">
+
+          <button
+            type="button"
+            class="btn btn-light"
+            data-scroll="#how"
+          >
             See how it works
           </button>
 
         </div>
 
+
         <div class="trust-row">
-          <span>♟ Focus battles</span>
-          <span>♨ Streaks</span>
-          <span>♛ Exam bosses</span>
+
+          <span>
+            ♟ Focus battles
+          </span>
+
+          <span>
+            ♨ Streaks
+          </span>
+
+          <span>
+            ♛ Exam bosses
+          </span>
+
         </div>
 
       </div>
 
 
+
+      <!-- =====================================================
+           DECORATIVE BOARD
+           ===================================================== -->
+
       <div class="hero-board-wrap">
 
         <div class="board-glow"></div>
 
+
         <div class="floating-card card-top">
+
           <span>⚡</span>
+
           <div>
             <strong>+200 XP</strong>
             <small>Topic conquered</small>
           </div>
+
         </div>
 
+
         <div class="floating-card card-bottom">
+
           <span>🔥</span>
+
           <div>
             <strong>7 day streak</strong>
             <small>Keep your momentum</small>
           </div>
+
         </div>
+
 
         <div class="board-frame">
 
@@ -111,9 +186,17 @@
             <span>LVL 08</span>
           </div>
 
-          <div class="chessboard" aria-label="Decorative chessboard">
 
-            <div class="board-squares" id="boardSquares"></div>
+          <div
+            class="chessboard"
+            aria-label="Decorative chessboard"
+          >
+
+            <div
+              class="board-squares"
+              id="boardSquares"
+            ></div>
+
 
             <div class="board-piece p1">♜</div>
             <div class="board-piece p2">♞</div>
@@ -126,10 +209,19 @@
 
           </div>
 
+
           <div class="board-footer">
-            <span>COURSE PROGRESS</span>
-            <strong>72%</strong>
+
+            <span>
+              COURSE PROGRESS
+            </span>
+
+            <strong>
+              72%
+            </strong>
+
           </div>
+
 
           <div class="progress">
             <i style="width:72%"></i>
@@ -142,7 +234,11 @@
     </section>
 
 
-    <!-- STATS -->
+
+    <!-- =======================================================
+         STATS
+         ======================================================= -->
+
     <section class="stats">
 
       <div>
@@ -168,8 +264,15 @@
     </section>
 
 
-    <!-- HOW IT WORKS -->
-    <section class="how" id="how">
+
+    <!-- =======================================================
+         HOW IT WORKS
+         ======================================================= -->
+
+    <section
+      class="how"
+      id="how"
+    >
 
       <div class="section-heading">
 
@@ -178,11 +281,13 @@
         </div>
 
         <h2>
-          Your semester becomes a <em>strategy game.</em>
+          Your semester becomes a
+          <em>strategy game.</em>
         </h2>
 
         <p>
-          Every piece has a purpose. Every study session moves you closer to checkmate.
+          Every piece has a purpose. Every study session moves
+          you closer to checkmate.
         </p>
 
       </div>
@@ -190,29 +295,43 @@
 
       <div class="steps">
 
+
         <article class="step-card">
 
-          <span class="step-number">01</span>
+          <span class="step-number">
+            01
+          </span>
 
-          <div class="step-icon">♟</div>
+          <div class="step-icon">
+            ♟
+          </div>
 
-          <h3>Build your board</h3>
+          <h3>
+            Build your board
+          </h3>
 
           <p>
-            Add your courses, topics, past questions and exam dates.
-            ChessMate maps your semester.
+            Add your courses, topics, past questions and exam
+            dates. ChessMate maps your semester.
           </p>
 
         </article>
 
 
+
         <article class="step-card featured">
 
-          <span class="step-number">02</span>
+          <span class="step-number">
+            02
+          </span>
 
-          <div class="step-icon">⚔</div>
+          <div class="step-icon">
+            ⚔
+          </div>
 
-          <h3>Start a battle</h3>
+          <h3>
+            Start a battle
+          </h3>
 
           <p>
             Choose a target and enter a focused study session.
@@ -222,13 +341,20 @@
         </article>
 
 
+
         <article class="step-card">
 
-          <span class="step-number">03</span>
+          <span class="step-number">
+            03
+          </span>
 
-          <div class="step-icon">♛</div>
+          <div class="step-icon">
+            ♛
+          </div>
 
-          <h3>Defeat the boss</h3>
+          <h3>
+            Defeat the boss
+          </h3>
 
           <p>
             Topics fall away, your progress rises, and your exam
@@ -242,8 +368,15 @@
     </section>
 
 
-    <!-- FEATURES -->
-    <section class="feature-strip" id="features">
+
+    <!-- =======================================================
+         FEATURES
+         ======================================================= -->
+
+    <section
+      class="feature-strip"
+      id="features"
+    >
 
       <div>
 
@@ -263,22 +396,30 @@
 
         <div>
           <b>⚡ XP & Levels</b>
-          <span>Make progress visible and rewarding.</span>
+          <span>
+            Make progress visible and rewarding.
+          </span>
         </div>
 
         <div>
           <b>🔥 Study Streaks</b>
-          <span>Build consistency without the guilt.</span>
+          <span>
+            Build consistency without the guilt.
+          </span>
         </div>
 
         <div>
           <b>👥 Friends</b>
-          <span>Add classmates by username and challenge them.</span>
+          <span>
+            Add classmates by username and challenge them.
+          </span>
         </div>
 
         <div>
           <b>👑 Exam Bosses</b>
-          <span>See exactly how prepared you are.</span>
+          <span>
+            See exactly how prepared you are.
+          </span>
         </div>
 
       </div>
@@ -286,12 +427,17 @@
     </section>
 
 
-    <!-- FINAL CTA -->
+
+    <!-- =======================================================
+         FINAL CTA
+         ======================================================= -->
+
     <section class="final-cta">
 
       <div class="mini-board">
         ♟ ♞ ♝ ♜ ♛ ♚
       </div>
+
 
       <div>
 
@@ -305,7 +451,12 @@
 
       </div>
 
-      <button class="btn btn-primary" data-open-auth="signup">
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-open-auth="signup"
+      >
         Start ChessMate <span>→</span>
       </button>
 
@@ -314,23 +465,45 @@
   </main>
 
 
-  <!-- FOOTER -->
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+
   <footer>
-    <span>♞ ChessMate Study</span>
-    <span>Study smart. Play strategically.</span>
+
+    <span>
+      ♞ ChessMate Study
+    </span>
+
+    <span>
+      Study smart. Play strategically.
+    </span>
+
   </footer>
 
 
-  <!-- AUTHENTICATION MODAL -->
+
+  <!-- =========================================================
+       AUTHENTICATION MODAL
+       ========================================================= -->
+
   <div
     class="modal-backdrop"
     id="authModal"
     aria-hidden="true"
   >
 
-    <div class="auth-modal">
+    <div
+      class="auth-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="authTitle"
+    >
+
 
       <button
+        type="button"
         class="modal-close"
         id="closeAuth"
         aria-label="Close"
@@ -362,61 +535,90 @@
       </p>
 
 
-      <form id="authForm">
+
+      <!-- =====================================================
+           AUTH FORM
+           ===================================================== -->
+
+      <form
+        id="authForm"
+        novalidate
+      >
+
 
         <!-- USERNAME -->
+
         <label id="usernameWrap">
+
           Username
 
           <input
             id="username"
+            name="username"
             type="text"
             placeholder="@yourusername"
             autocomplete="username"
           >
+
         </label>
 
 
+
         <!-- DISPLAY NAME -->
+
         <label id="displayNameWrap">
+
           Display name
 
           <input
             id="displayName"
+            name="displayName"
             type="text"
             placeholder="Your name"
             autocomplete="name"
           >
+
         </label>
 
 
+
         <!-- EMAIL -->
+
         <label>
+
           Email
 
           <input
             id="email"
+            name="email"
             type="email"
             placeholder="you@example.com"
-            required
             autocomplete="email"
           >
+
         </label>
 
 
+
         <!-- PASSWORD -->
+
         <label>
+
           Password
 
           <input
             id="password"
+            name="password"
             type="password"
             placeholder="At least 6 characters"
-            required
             autocomplete="new-password"
           >
+
         </label>
 
+
+
+        <!-- SUBMIT -->
 
         <button
           class="btn btn-primary form-submit"
@@ -429,10 +631,14 @@
       </form>
 
 
+
+      <!-- SWITCH LOGIN/SIGNUP -->
+
       <p
         class="auth-switch"
         id="authSwitch"
       >
+
         Already have an account?
 
         <button
@@ -445,9 +651,14 @@
       </p>
 
 
+
+      <!-- MESSAGE -->
+
       <div
         class="auth-message"
         id="authMessage"
+        role="status"
+        aria-live="polite"
       ></div>
 
     </div>
@@ -455,42 +666,95 @@
   </div>
 
 
+
+  <!-- =========================================================
+       SUPABASE
+       ========================================================= -->
+
+  <!-- Supabase JavaScript library MUST load before app.js -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+
+  <!-- =========================================================
+       CHESSMATE SUPABASE CONFIGURATION
+       ========================================================= -->
+
   <script>
-  /* =========================================================
-     CHESSMATE STUDY — SUPABASE
-     ========================================================= */
 
-  const CHESSMATE_SUPABASE_URL =
-    "https://nnkuosivpwedjacwklol.supabase.co";
+    /*
+     * =========================================================
+     * CHESSMATE SUPABASE CONFIGURATION
+     * =========================================================
+     *
+     * This is the PUBLIC Supabase key.
+     *
+     * NEVER put a sb_secret_ key in this website.
+     *
+     * The publishable/anon key is designed to be used
+     * in browser applications.
+     */
 
-  const CHESSMATE_SUPABASE_KEY =
-    "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
+    const CHESSMATE_SUPABASE_URL =
+      "https://nnkuosivpwedjacwklol.supabase.co";
+
+    const CHESSMATE_SUPABASE_KEY =
+      "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
 
 
-  /* Make sure the Supabase library loaded */
-  if (!window.supabase) {
+    /*
+     * Check that the Supabase library loaded.
+     */
 
-    console.error(
-      "ChessMate: Supabase library failed to load."
-    );
+    if (
+      typeof window.supabase === "undefined"
+    ) {
 
-  } else {
-
-    window.ChessMateSupabase =
-      window.supabase.createClient(
-        CHESSMATE_SUPABASE_URL,
-        CHESSMATE_SUPABASE_KEY
+      console.error(
+        "ChessMate ERROR: Supabase library did not load."
       );
 
-    console.log(
-      "♞ ChessMate: Supabase client initialized."
-    );
+    } else {
 
-  }
-</script>
+      /*
+       * Create ONE Supabase client.
+       */
 
-<!-- CHESSMATE APPLICATION -->
-<script src="app.js"></script>
+      window.ChessMateSupabase =
+        window.supabase.createClient(
+          CHESSMATE_SUPABASE_URL,
+          CHESSMATE_SUPABASE_KEY
+        );
+
+
+      /*
+       * Also expose it under the name used by
+       * the application controller.
+       */
+
+      window.supabaseClient =
+        window.ChessMateSupabase;
+
+
+      console.log(
+        "♞ ChessMate: Supabase connected successfully."
+      );
+
+    }
+
+  </script>
+
+
+
+  <!-- =========================================================
+       CHESSMATE APPLICATION
+       ========================================================= -->
+
+  <script src="app.js"></script>
+
 
 </body>
 </html>
