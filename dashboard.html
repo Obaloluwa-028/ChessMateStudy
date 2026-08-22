@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta name="theme-color" content="#080b12">
+
+  <title>ChessMate Study — Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080b12;
+      --panel: #10151f;
+      --panel2: #151b27;
+      --border: rgba(255,255,255,.08);
+
+      --gold: #e8c66a;
+      --gold2: #f3d98a;
+
+      --text: #f5f2e8;
+      --muted: #8d96a8;
+
+      --green: #5ee6a8;
+      --blue: #72a7ff;
+      --red: #ff6f6f;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background:
+        radial-gradient(
+          circle at 20% 0%,
+          rgba(232,198,106,.08),
+          transparent 35%
+        ),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .dashboard {
+      min-height: 100vh;
+    }
+
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 245px;
+
+      background: rgba(10,13,20,.96);
+      border-right: 1px solid var(--border);
+
+      padding: 28px 18px;
+
+      display: flex;
+      flex-direction: column;
+
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      color: var(--text);
+      text-decoration: none;
+
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+
+      margin-bottom: 42px;
+    }
+
+    .brand-mark {
+      width: 39px;
+      height: 39px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      background: linear-gradient(
+        145deg,
+        var(--gold2),
+        var(--gold)
+      );
+
+      color: #111;
+      font-size: 24px;
+    }
+
+    .brand b {
+      color: var(--gold);
+    }
+
+    .side-label {
+      color: #555e70;
+      font-size: 10px;
+      letter-spacing: 2px;
+      font-weight: 700;
+
+      margin: 0 12px 10px;
+    }
+
+    .side-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .side-nav button {
+      border: 0;
+      background: transparent;
+
+      color: var(--muted);
+
+      text-align: left;
+
+      padding: 13px 14px;
+      border-radius: 10px;
+
+      transition: .2s;
+    }
+
+    .side-nav button:hover,
+    .side-nav button.active {
+      background: rgba(232,198,106,.1);
+      color: var(--gold2);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .logout {
+      width: 100%;
+
+      border: 1px solid var(--border);
+      background: transparent;
+
+      color: var(--muted);
+
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .logout:hover {
+      color: var(--red);
+      border-color: rgba(255,111,111,.3);
+    }
+
+
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    .main {
+      margin-left: 245px;
+      padding: 34px;
+      max-width: 1500px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 30px;
+    }
+
+    .welcome small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .welcome h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      margin-top: 4px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 50%;
+
+      display: grid;
+      place-items: center;
+
+      background: linear-gradient(
+        145deg,
+        var(--gold2),
+        var(--gold)
+      );
+
+      color: #111;
+      font-weight: 800;
+    }
+
+
+    /* =====================================================
+       STATS
+       ===================================================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      background: linear-gradient(
+        145deg,
+        var(--panel2),
+        var(--panel)
+      );
+
+      border: 1px solid var(--border);
+      border-radius: 16px;
+
+      padding: 20px;
+    }
+
+    .stat-icon {
+      font-size: 21px;
+      margin-bottom: 15px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat-value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+
+    /* =====================================================
+       CONTENT GRID
+       ===================================================== */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: linear-gradient(
+        145deg,
+        rgba(21,27,39,.98),
+        rgba(12,16,24,.98)
+      );
+
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      padding: 23px;
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 20px;
+    }
+
+    .panel-heading h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 20px;
+    }
+
+    .panel-heading span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+
+    /* =====================================================
+       ADD BUTTON
+       ===================================================== */
+
+    .add-course {
+      border: 1px solid rgba(232,198,106,.35);
+
+      background: rgba(232,198,106,.08);
+
+      color: var(--gold2);
+
+      padding: 9px 13px;
+      border-radius: 9px;
+
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .add-course:hover {
+      background: rgba(232,198,106,.16);
+    }
+
+
+    /* =====================================================
+       COURSES
+       ===================================================== */
+
+    .courses {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .course {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+
+      border-radius: 13px;
+
+      padding: 16px;
+
+      transition: .2s;
+    }
+
+    .course:hover {
+      border-color: rgba(232,198,106,.25);
+      transform: translateY(-1px);
+    }
+
+    .course-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .course-name {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .piece {
+      width: 37px;
+      height: 37px;
+
+      border-radius: 9px;
+
+      display: grid;
+      place-items: center;
+
+      background: rgba(232,198,106,.1);
+      color: var(--gold2);
+
+      font-size: 20px;
+    }
+
+    .course h3 {
+      font-size: 15px;
+    }
+
+    .course-code {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .progress-value {
+      color: var(--gold2);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #252c38;
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      margin-top: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+
+      background: linear-gradient(
+        90deg,
+        var(--gold),
+        var(--gold2)
+      );
+
+      border-radius: 20px;
+    }
+
+    .course-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .delete-course {
+      border: 0;
+      background: transparent;
+      color: #687183;
+      font-size: 11px;
+    }
+
+    .delete-course:hover {
+      color: var(--red);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+
+      border: 1px dashed rgba(255,255,255,.1);
+      border-radius: 13px;
+    }
+
+    .empty-piece {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    .empty h3 {
+      margin-bottom: 6px;
+    }
+
+    .empty p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+
+    /* =====================================================
+       GAME CARDS
+       ===================================================== */
+
+    .game-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .game-card {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      padding: 18px;
+
+      background: rgba(255,255,255,.025);
+
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .game-icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 11px;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 21px;
+
+      background: rgba(255,255,255,.05);
+    }
+
+    .game-card h3 {
+      font-size: 14px;
+    }
+
+    .game-card p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+
+    /* =====================================================
+       MODAL
+       ===================================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0,0,0,.72);
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      z-index: 100;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 450px;
+
+      background: #111722;
+
+      border: 1px solid rgba(232,198,106,.18);
+
+      border-radius: 20px;
+
+      padding: 27px;
+
+      box-shadow: 0 25px 80px rgba(0,0,0,.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      margin-bottom: 25px;
+    }
+
+    .modal-header h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 22px;
+    }
+
+    .modal-header p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .close {
+      background: transparent;
+      border: 0;
+
+      color: var(--muted);
+      font-size: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #b9c0cd;
+      font-size: 12px;
+      font-weight: 600;
+
+      margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+
+      background: #090d14;
+      color: var(--text);
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      padding: 12px;
+
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: rgba(232,198,106,.5);
+    }
+
+    .save-course {
+      width: 100%;
+
+      border: 0;
+
+      background: linear-gradient(
+        135deg,
+        var(--gold2),
+        var(--gold)
+      );
+
+      color: #101010;
+
+      padding: 13px;
+
+      border-radius: 10px;
+
+      font-weight: 800;
+    }
+
+    .save-course:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .form-message {
+      min-height: 20px;
+      margin-bottom: 10px;
+
+      font-size: 12px;
+    }
+
+    .form-message.error {
+      color: var(--red);
+    }
+
+    .form-message.success {
+      color: var(--green);
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 1000px) {
+
+      .sidebar {
+        width: 75px;
+        padding: 20px 10px;
+      }
+
+      .brand span:last-child,
+      .side-label,
+      .side-nav button span,
+      .logout span {
+        display: none;
+      }
+
+      .brand {
+        justify-content: center;
+      }
+
+      .side-nav button {
+        text-align: center;
+        font-size: 19px;
+      }
+
+      .main {
+        margin-left: 75px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+
+      .main {
+        padding: 20px 14px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat {
+        padding: 15px;
+      }
+
+      .stat-value {
+        font-size: 21px;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- =====================================================
+       SIDEBAR
+       ===================================================== -->
+
+  <aside class="sidebar">
+
+    <a class="brand" href="index.html">
+
+      <span class="brand-mark">♞</span>
+
+      <span>
+        ChessMate <b>Study</b>
+      </span>
+
+    </a>
+
+
+    <div class="side-label">
+      STUDY
+    </div>
+
+
+    <nav class="side-nav">
+
+      <button class="active">
+        ♟ <span>Dashboard</span>
+      </button>
+
+      <button>
+        ⚔ <span>Focus Battles</span>
+      </button>
+
+      <button>
+        👑 <span>Exam Bosses</span>
+      </button>
+
+      <button>
+        👥 <span>Friends</span>
+      </button>
+
+      <button>
+        📊 <span>Progress</span>
+      </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <button class="logout" id="logoutButton">
+        🚪 <span>Log out</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="welcome">
+
+        <small>
+          YOUR BOARD
+        </small>
+
+        <h1 id="welcomeTitle">
+          Welcome back, Student ♞
+        </h1>
+
+      </div>
+
+
+      <div class="profile">
+
+        <div
+          class="avatar"
+          id="avatar"
+        >
+          S
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         STATS
+         ===================================================== -->
+
+    <section class="stats">
+
+      <div class="stat">
+
+        <div class="stat-icon">
+          ⭐
+        </div>
+
+        <div class="stat-label">
+          LEVEL
+        </div>
+
+        <div
+          class="stat-value"
+          id="levelValue"
+        >
+          1
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-icon">
+          ⚡
+        </div>
+
+        <div class="stat-label">
+          TOTAL XP
+        </div>
+
+        <div
+          class="stat-value"
+          id="xpValue"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-icon">
+          🔥
+        </div>
+
+        <div class="stat-label">
+          STUDY STREAK
+        </div>
+
+        <div
+          class="stat-value"
+          id="streakValue"
+        >
+          0 days
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div class="stat-icon">
+          ♟
+        </div>
+
+        <div class="stat-label">
+          COURSES
+        </div>
+
+        <div
+          class="stat-value"
+          id="courseCount"
+        >
+          0
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <section class="content-grid">
+
+
+      <!-- COURSES -->
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              ♟ My Courses
+            </h2>
+
+            <span>
+              Your semester board
+            </span>
+
+          </div>
+
+
+          <button
+            class="add-course"
+            id="addCourseButton"
+          >
+            + Add Course
+          </button>
+
+        </div>
+
+
+        <div
+          class="courses"
+          id="coursesList"
+        >
+
+          <div class="empty">
+
+            <div class="empty-piece">
+              ♟
+            </div>
+
+            <h3>
+              Your board is empty
+            </h3>
+
+            <p>
+              Add your first course and begin your semester strategy.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- GAME FEATURES -->
+
+      <div class="panel">
+
+        <div class="panel-heading">
+
+          <div>
+
+            <h2>
+              ⚔ Your Arena
+            </h2>
+
+            <span>
+              Choose your next move
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="game-grid">
+
+          <div class="game-card">
+
+            <div class="game-icon">
+              ⚔
+            </div>
+
+            <div>
+
+              <h3>
+                Focus Battle
+              </h3>
+
+              <p>
+                Turn a study session into a battle.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-card">
+
+            <div class="game-icon">
+              👑
+            </div>
+
+            <div>
+
+              <h3>
+                Exam Boss
+              </h3>
+
+              <p>
+                Prepare for your next major exam.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-card">
+
+            <div class="game-icon">
+              👥
+            </div>
+
+            <div>
+
+              <h3>
+                Friends
+              </h3>
+
+              <p>
+                Challenge classmates and compare progress.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-card">
+
+            <div class="game-icon">
+              🔥
+            </div>
+
+            <div>
+
+              <h3>
+                Study Streak
+              </h3>
+
+              <p>
+                Keep your momentum alive.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================================================
+     ADD COURSE MODAL
+     ========================================================= -->
+
+<div
+  class="modal"
+  id="courseModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Add a Course
+        </h2>
+
+        <p>
+          Place a new piece on your semester board.
+        </p>
+
+      </div>
+
+      <button
+        class="close"
+        id="closeCourseModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="courseForm">
+
+      <div class="form-group">
+
+        <label for="courseName">
+          Course name
+        </label>
+
+        <input
+          id="courseName"
+          type="text"
+          placeholder="e.g. Mathematics"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="courseCode">
+          Course code
+        </label>
+
+        <input
+          id="courseCode"
+          type="text"
+          placeholder="e.g. MTH 101"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="courseDescription">
+          Description
+        </label>
+
+        <textarea
+          id="courseDescription"
+          placeholder="What are you studying?"
+        ></textarea>
+
+      </div>
+
+
+      <div
+        class="form-message"
+        id="courseMessage"
+      ></div>
+
+
+      <button
+        class="save-course"
+        type="submit"
+        id="saveCourse"
+      >
+        Add Course ♟
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     SUPABASE
+     ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+  const CHESSMATE_SUPABASE_URL =
+    "https://ximjhyzkofvcmgmlqcpq.supabase.co";
+
+  const CHESSMATE_SUPABASE_KEY =
+    "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
+
+  window.ChessMateSupabase =
+    window.supabase.createClient(
+      CHESSMATE_SUPABASE_URL,
+      CHESSMATE_SUPABASE_KEY
+    );
+
+</script>
+
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>
